@@ -1,3 +1,4 @@
 fn main() {
-    println!("Hello, world!");
+    // generate terrain and initialize window and shaders
+
 }
