@@ -1,40 +1,37 @@
 extern crate kiss3d;
-extern crate nalgebra as na;
-
-use na::Point2;
-use na::Point3;
 
 use kiss3d::window::Window;
 use kiss3d::light::Light;
+use kiss3d::resource::Mesh;
+
+use crate::mesh;
+
+pub struct Color(pub f32, pub f32, pub f32);
 
 pub struct Terrain {
-    height_map: Vec<Point3<f32>>,
-    origin: Point2<u32>,
+    height_map: Mesh, // Abstract the height map away
     x_size: usize,
     y_size: usize,
+    color: Color
 }
 
 impl Terrain {
-    pub fn new(origin: Point2<u32>, x_size: usize, y_size: usize) -> Terrain {
-        Terrain {
-            height_map: Vec::new(), 
-            origin: origin,
+    pub fn new(color: Color, x_size: usize, y_size: usize) -> Terrain {
+        // TODO: height map stuff on new()
+        /*Terrain {
+            height_map: , 
             x_size: x_size,
             y_size: y_size,
-        }
-    }
-
-    pub fn randomize(&self) {
-
+            color: color,
+        }*/
     }
 
     pub fn render(&self) {
         let mut window = Window::new("terrain");
-        let mut quad = window.add_quad(5f32, 5f32, self.x_size, self.y_size);
-
+        
+        // TODO: mesh stuff
         window.set_light(Light::StickToCamera);
 
-        quad.set_color(1f32, 1f32, 1f32); 
         while window.render() {}
     }
 }

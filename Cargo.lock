@@ -207,6 +207,15 @@ dependencies = [
 ]
 
 [[package]]
+name = "crc32fast"
+version = "1.2.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "ba125de2af0df55319f41944744ad91c71113bf74a4646efff39afe1f6842db1"
+dependencies = [
+ "cfg-if",
+]
+
+[[package]]
 name = "crossbeam-deque"
 version = "0.7.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -317,15 +326,6 @@ checksum = "a06f77d526c1a601b7c4cdd98f54b5eaabffc14d5f2f0296febdc7f357c6d3ba"
 
 [[package]]
 name = "generic-array"
-version = "0.12.3"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "c68f0274ae0e023facc3c97b2e00f076be70e254bc851d972503b328db79b2ec"
-dependencies = [
- "typenum",
-]
-
-[[package]]
-name = "generic-array"
 version = "0.13.2"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0ed1e761351b56f54eb9dcd0cfaca9fd0daecf93918e1cfc01c8a3d26ee7adcd"
@@ -356,11 +356,11 @@ dependencies = [
 
 [[package]]
 name = "gl"
-version = "0.11.0"
+version = "0.14.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "d7d8c8e25e8ed44d4813809205090162723a866fb4be3a9d8bb983c9a0bf98f1"
+checksum = "a94edab108827d67608095e269cf862e60d920f144a5026d3dbcfd8b877fb404"
 dependencies = [
- "gl_generator 0.10.0",
+ "gl_generator 0.14.0",
 ]
 
 [[package]]
@@ -379,6 +379,17 @@ name = "gl_generator"
 version = "0.13.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ca98bbde17256e02d17336a6bdb5a50f7d0ccacee502e191d3e3d0ec2f96f84a"
+dependencies = [
+ "khronos_api",
+ "log",
+ "xml-rs",
+]
+
+[[package]]
+name = "gl_generator"
+version = "0.14.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "1a95dfc23a2b4a9a2f5ab41d194f8bfda3cabec42af4e39f08c339eb2a0c124d"
 dependencies = [
  "khronos_api",
  "log",
@@ -428,14 +439,13 @@ dependencies = [
 
 [[package]]
 name = "image"
-version = "0.21.3"
+version = "0.22.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "35371e467cd7b0b3d1d6013d619203658467df12d61b0ca43cd67b743b1965eb"
+checksum = "08ed2ada878397b045454ac7cfb011d73132c59f31a955d230bd1f1c2e68eb4a"
 dependencies = [
  "byteorder",
  "gif",
  "jpeg-decoder",
- "lzw",
  "num-iter",
  "num-rational",
  "num-traits",
@@ -486,9 +496,9 @@ checksum = "e2db585e1d738fc771bf08a151420d3ed193d9d895a36df7f6f8a9456b911ddc"
 
 [[package]]
 name = "kiss3d"
-version = "0.21.0"
+version = "0.22.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "cc0123edad259d372cf8d5aaa0445f6558b84bfb165ab201d845552807392e43"
+checksum = "9873335d4a3f17fb15001e755bb352d90ce88b20fb9380a33d18c9f9915da68a"
 dependencies = [
  "bitflags",
  "gl",
@@ -496,10 +506,10 @@ dependencies = [
  "image",
  "instant",
  "libc",
- "nalgebra 0.18.1",
+ "nalgebra",
  "ncollide3d",
  "num-traits",
- "rusttype 0.7.9",
+ "rusttype 0.8.2",
  "serde",
  "serde_derive",
  "stdweb",
@@ -619,30 +629,13 @@ dependencies = [
 
 [[package]]
 name = "nalgebra"
-version = "0.18.1"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "aaa9fddbc34c8c35dd2108515587b8ce0cab396f17977b8c738568e4edb521a2"
-dependencies = [
- "alga",
- "approx",
- "generic-array 0.12.3",
- "matrixmultiply",
- "num-complex",
- "num-rational",
- "num-traits",
- "rand 0.6.5",
- "typenum",
-]
-
-[[package]]
-name = "nalgebra"
 version = "0.19.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "0abb021006c01b126a936a8dd1351e0720d83995f4fc942d0d426c654f990745"
 dependencies = [
  "alga",
  "approx",
- "generic-array 0.13.2",
+ "generic-array",
  "matrixmultiply",
  "num-complex",
  "num-rational",
@@ -654,16 +647,16 @@ dependencies = [
 
 [[package]]
 name = "ncollide3d"
-version = "0.20.1"
+version = "0.21.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "3ee57cac70a2892e89fab7d5fd295b0ad544d1f877fa70fe8ae4be477514dd61"
+checksum = "f5b02e85d04190e6f39e9435a9b915483a9d31424d270f9107fd6d0ff8298fa6"
 dependencies = [
  "alga",
  "approx",
  "bitflags",
  "downcast-rs",
  "either",
- "nalgebra 0.18.1",
+ "nalgebra",
  "num-traits",
  "petgraph",
  "slab",
@@ -845,14 +838,14 @@ checksum = "05da548ad6865900e60eaba7f589cc0783590a92e940c26953ff81ddbab2d677"
 
 [[package]]
 name = "png"
-version = "0.14.1"
+version = "0.15.3"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "63daf481fdd0defa2d1d2be15c674fbfa1b0fd71882c303a91f9a79b3252c359"
+checksum = "ef859a23054bbfee7811284275ae522f0434a3c8e7f4b74bd4a35ae7e1c4a283"
 dependencies = [
  "bitflags",
+ "crc32fast",
  "deflate",
  "inflate",
- "num-iter",
 ]
 
 [[package]]
@@ -1242,9 +1235,9 @@ checksum = "c111b5bd5695e56cffe5129854aa230b39c93a305372fdbb2668ca2394eea9f8"
 
 [[package]]
 name = "slotmap"
-version = "0.3.0"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "759fd553261805f128e2900bf69ab3d034260bc338caf7f0ee54dbf035c85acd"
+checksum = "c46a3482db8f247956e464d783693ece164ca056e6e67563ee5505bdb86452cd"
 
 [[package]]
 name = "smallvec"
@@ -1365,14 +1358,16 @@ name = "terrain"
 version = "0.1.0"
 dependencies = [
  "kiss3d",
- "nalgebra 0.19.0",
+ "nalgebra",
+ "ncollide3d",
+ "rand 0.7.3",
 ]
 
 [[package]]
 name = "tiff"
-version = "0.2.2"
+version = "0.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "1e4834f28a0330cb9f3f2c87d2649dca723cb33802e2bdcf18da32759fbec7ce"
+checksum = "d7b7c2cfc4742bd8a32f2e614339dd8ce30dbcf676bb262bd63a2327bc5df57d"
 dependencies = [
  "byteorder",
  "lzw",
