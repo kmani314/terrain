@@ -14,7 +14,7 @@ pub fn random_mesh(size: u32) -> TriMesh<f32> {
 
     for i in 0..size {
         for j in 0..size {
-            map.push(Point3::new(j as f32, i as f32, rng.gen::<f32>()*5.0));
+            map.push(Point3::new(j as f32, i as f32, rng.gen::<f32>()));
         }
     }
 
