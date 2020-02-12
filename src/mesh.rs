@@ -8,13 +8,13 @@ use na::Point3;
 use rand::Rng;
 
 // Generates random mesh of size size 
-pub fn random_mesh(size: u32) -> TriMesh<f32> {
+pub fn random_mesh(size: u32, spacing: f32) -> TriMesh<f32> {
     let mut map = Vec::new();
     let mut rng = rand::thread_rng();
 
     for i in 0..size {
         for j in 0..size {
-            map.push(Point3::new(j as f32, i as f32, rng.gen::<f32>()));
+            map.push(Point3::new(spacing*(j as f32), spacing*(i as f32), rng.gen::<f32>()));
         }
     }
 
@@ -28,7 +28,6 @@ pub fn points_to_mesh(points: Vec<Point3<f32>>, size: u32) -> TriMesh<f32> {
     for i in 0..size {
         for j in 0..size {
             // Compute nearest two vertices in the grid to form triangles
-
             if i != size - 1 && j != size - 1 {
                 indecies.push(Point3::<u32>::new(i*size + j + 1, (i + 1)*size + j, (i + 1)*size + j + 1));
                 indecies.push(Point3::<u32>::new(i*size + j + 1, i*size + j, (i + 1)*size + j));

@@ -9,7 +9,6 @@ use terrain::Terrain;
 use terrain::Color;
 
 fn main() {
-    let mut terrain = Terrain::new(Color(0.439, 0.329, 0.243), 512);
-    terrain.random();
+    let mut terrain = Terrain::new(Color(0.439, 0.329, 0.243), 512, 0.05);
     terrain.render();
 }
