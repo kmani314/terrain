@@ -8,6 +8,6 @@ edition = "2018"
 
 [dependencies]
 kiss3d="0.22.1"
+ncollide3d="0.21"
 nalgebra="0.19"
 rand="0.7"
-ncollide3d="0.21"
