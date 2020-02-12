@@ -10,6 +10,7 @@ use na::{Point3, Vector3, Translation3};
 use ncollide3d::procedural::TriMesh;
 
 use crate::mesh;
+use crate::noise;
 
 pub struct Color(pub f32, pub f32, pub f32);
 
@@ -41,8 +42,12 @@ impl Terrain {
         self.mesh = mesh::random_mesh(self.size, self.spacing);
     }
     
-    pub fn generate_terrain() {
+    pub fn generate_terrain(&mut self) {
         // TODO: Noise and erosion and the rest
+        
+        let height_map: Vec<Point3<f32>> = noise::get_continuous_noise(self.size, self.spacing);
+         
+        self.mesh = mesh::points_to_mesh(height_map, self.size);
     }
     
     pub fn render(&mut self) {
