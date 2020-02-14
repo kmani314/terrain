@@ -56,15 +56,17 @@ impl Terrain {
         let mut mesh = window.add_trimesh(mesh::points_to_mesh(self.height_map.clone(), self.size, self.scale), Vector3::new(1.0, 1.0, 1.0));
         mesh.set_color(self.color.0, self.color.1, self.color.2);
         
-        let corrected = -((self.size - 1) as f32*self.scale)/2.0;
-        mesh.append_translation(&Translation3::new(-(((self.size - 1) as f32*self.scale)/2.0), -(((self.size - 1) as f32*self.scale)/2.0), 0.0)); // Center mesh in frame
-
-        let center = Point3::new(0.0, 0.0, 0.0);
-        let eye = Point3::new(0.0, 0.0, 10.0);
+        let corrected = ((self.size - 1) as f32*self.scale)/2.0;
+        let center = Point3::new(corrected, 0.0, corrected);
+        let eye = Point3::new(corrected, 1.5*corrected, -2.0*corrected);
+        
+        let rot = 0.008; // Smooth rotation effect
         let mut arc_ball = ArcBall::new(eye, center); // Arc Ball Camera
-
         window.set_light(Light::StickToCamera);
-
-        while !window.should_close() { window.render_with_camera(&mut arc_ball); }
+        
+        while !window.should_close() {
+            arc_ball.set_yaw(arc_ball.yaw() + rot);
+            window.render_with_camera(&mut arc_ball);
+        }
     }
 }
