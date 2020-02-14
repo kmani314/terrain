@@ -47,6 +47,7 @@ impl Terrain {
     
     pub fn generate_terrain(&mut self) {
         // TODO: Noise and erosion and the rest
+        self.height_map = noise::get_noisy_map(self.size, 0.3, 0.0, 0.0, 8, 3.0);
     }
     
     pub fn render(&mut self) {
@@ -65,7 +66,7 @@ impl Terrain {
         window.set_light(Light::StickToCamera);
         
         while !window.should_close() {
-            arc_ball.set_yaw(arc_ball.yaw() + rot);
+            //arc_ball.set_yaw(arc_ball.yaw() + rot);
             window.render_with_camera(&mut arc_ball);
         }
     }
