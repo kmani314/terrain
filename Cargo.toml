@@ -10,5 +10,6 @@ edition = "2018"
 kiss3d={ git="https://github.com/kmani314/kiss3d" } # Fork supports 2^32 face meshes
 ncollide3d="0.21"
 nalgebra="0.19"
-noise="0.6.0"
+noise="0.5.1"
+simdnoise="3.1.4"
 rand="0.7"
