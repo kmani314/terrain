@@ -14,7 +14,7 @@ pub struct Color(pub f32, pub f32, pub f32);
 
 // Terrain Material
 // Copy of the default kiss3d::builtin::ObjectMaterial with some additions for height based colors
-pub struct TerrainMaterial {
+pub struct TerrainMaterial<'a> {
     shader: Shader,
     position: ShaderAttribute<Point3<f32>>,
     normal: ShaderAttribute<Vector3<f32>>,
@@ -23,13 +23,16 @@ pub struct TerrainMaterial {
     ntransform: ShaderUniform<Matrix3<f32>>,
     scale: ShaderUniform<Matrix3<f32>>,
     light: ShaderUniform<Point3<f32>>,
-    color: ShaderUniform<Point3<f32>>,
+    //thresholds: ShaderAttribute<GLfloat>,
+    //colors: ShaderAttribute<Vector3<f32>>,
     tex_coord: ShaderAttribute<Point2<f32>>,
+    in_thresholds: &'a [f32],
+    in_colors: &'a [Color],
 }
 
-impl TerrainMaterial {
-    pub fn new(/*thresholds: &Vec<f32>, colors: Vec<Color>*/) -> TerrainMaterial {
-        let mut shader = Shader::new_from_str(VSHADER, FSHADER);
+impl<'a> TerrainMaterial<'a> {
+    pub fn new(in_thresholds: &'a [f32], in_colors: &'a [Color]) -> TerrainMaterial<'a> {
+        let mut shader = Shader::new_from_str(include_str!("shaders/vector.glsl"), include_str!("shaders/fragment.glsl"));
         shader.use_program();
         
         TerrainMaterial {
@@ -40,8 +43,9 @@ impl TerrainMaterial {
             ntransform: shader.get_uniform("ntransform").unwrap(),
             scale: shader.get_uniform("scale").unwrap(),
             light: shader.get_uniform("light_position").unwrap(),
-            color: shader.get_uniform("color").unwrap(),
             tex_coord: shader.get_attrib("tex_coord_v").unwrap(),
+            in_thresholds,
+            in_colors,
             shader,
         }
     }
@@ -60,7 +64,7 @@ impl TerrainMaterial {
     }
 }
 
-impl Material for TerrainMaterial {
+impl<'a> Material for TerrainMaterial<'a> {
     fn render(&mut self, 
         pass: usize, 
         transform: &Isometry3<f32>, 
@@ -89,7 +93,7 @@ impl Material for TerrainMaterial {
             self.transform.upload(&formated_transform);
             self.ntransform.upload(&formated_ntransform);
             self.scale.upload(&formated_scale);
-            self.color.upload(data.color());
+            //self.color.upload(data.color());
 
             mesh.bind(&mut self.position, &mut self.normal, &mut self.tex_coord);
 
@@ -103,54 +107,3 @@ impl Material for TerrainMaterial {
         self.deactivate();
     }
 }
-
-static VSHADER: &str =
-"#version 120
-attribute vec3 position;
-attribute vec3 normal;
-attribute vec3 color;
-attribute vec2 tex_coord_v;
-varying vec3 ws_normal;
-varying vec3 ws_position;
-varying vec2 tex_coord;
-uniform mat4 view;
-uniform mat4 transform;
-uniform mat3 scale;
-uniform mat3 ntransform;
-void main() {
-    mat4 scale4 = mat4(scale);
-    vec4 pos4   = transform * scale4 * vec4(position, 1.0);
-    tex_coord   = tex_coord_v;
-    ws_position = pos4.xyz;
-    gl_Position = view * pos4;
-    ws_normal   = normalize(ntransform * scale * normal);
-}";
-
-static FSHADER: &str =
-"#version 120
-uniform vec3      color;
-uniform vec3      light_position;
-uniform sampler2D tex;
-varying vec2      tex_coord;
-varying vec3      ws_normal;
-varying vec3      ws_position;
-void main() {
-  vec3 L = normalize(light_position - ws_position);
-  vec3 E = normalize(-ws_position);
-
-  // Height Based Colors:
-
-  //calculate Ambient Term:
-  vec4 Iamb = vec4(color, 1.0);
-
-  //calculate Diffuse Term:
-  vec4 Idiff1 = vec4(1.0, 1.0, 1.0, 1.0) * max(dot(ws_normal,L), 0.0);
-  Idiff1 = clamp(Idiff1, 0.0, 1.0);
-
-  // double sided lighting:
-  vec4 Idiff2 = vec4(1.0, 1.0, 1.0, 1.0) * max(dot(-ws_normal,L), 0.0);
-  Idiff2 = clamp(Idiff2, 0.0, 1.0);
-
-  vec4 tex_color = texture2D(tex, tex_coord);
-  gl_FragColor   = tex_color * (Iamb + (Idiff1 + Idiff2) / 2) / 2;
-}";
