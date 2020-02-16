@@ -5,7 +5,7 @@ use ncollide3d::procedural::{TriMesh, IndexBuffer};
 use na::Point3;
 
 // Generates indecies and mesh from height map
-pub fn points_to_mesh(height_map: Vec<f32>, size: u32) -> TriMesh<f32> {
+pub fn points_to_mesh(height_map: &Vec<f32>, size: u32) -> TriMesh<f32> {
     let mut points = Vec::new();
     let mut indecies = Vec::new();
 

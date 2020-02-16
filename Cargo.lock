@@ -913,6 +913,7 @@ dependencies = [
 name = "terrain"
 version = "0.1.0"
 dependencies = [
+ "gl",
  "kiss3d",
  "nalgebra",
  "ncollide3d",
