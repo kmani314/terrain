@@ -42,7 +42,7 @@ impl TerrainMaterial {
             light: shader.get_uniform("light_position").unwrap(),
             color: shader.get_uniform("color").unwrap(),
             tex_coord: shader.get_attrib("tex_coord_v").unwrap(),
-            shader: shader,
+            shader,
         }
     }
     
@@ -75,15 +75,15 @@ impl Material for TerrainMaterial {
         camera.upload(pass, &mut self.view);
 
         let pos = match *light {
-            Light::Absolute(ref p) => p.clone(),
-            Light::StickToCamera   => camera.eye()
+            Light::Absolute(ref p) => *p,
+            Light::StickToCamera  => camera.eye()
         };
         
         self.light.upload(&pos);
 
         let formated_transform = transform.to_homogeneous();
         let formated_ntransform = transform.rotation.to_rotation_matrix().into_inner();
-        let formated_scale     = Matrix3::from_diagonal(&Vector3::new(scale.x, scale.y, scale.z));
+        let formated_scale = Matrix3::from_diagonal(&Vector3::new(scale.x, scale.y, scale.z));
 
         unsafe {
             self.transform.upload(&formated_transform);
@@ -104,7 +104,7 @@ impl Material for TerrainMaterial {
     }
 }
 
-static VSHADER: &'static str =
+static VSHADER: &str =
 "#version 120
 attribute vec3 position;
 attribute vec3 normal;
@@ -126,7 +126,7 @@ void main() {
     ws_normal   = normalize(ntransform * scale * normal);
 }";
 
-static FSHADER: &'static str =
+static FSHADER: &str =
 "#version 120
 uniform vec3      color;
 uniform vec3      light_position;

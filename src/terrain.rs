@@ -19,8 +19,8 @@ impl Terrain {
     pub fn new(background: material::Color, size: u32) -> Terrain {
         Terrain {
             height_map: Vec::new(),
-            size: size,
-            background: background,
+            size,
+            background,
         }
     }
 

@@ -1,6 +1,5 @@
 extern crate rand;
 extern crate noise;
-extern crate simdnoise;
 
 use noise::{NoiseFn, Seedable, Perlin};
 use rand::prelude::*;
