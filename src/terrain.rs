@@ -49,7 +49,7 @@ impl Terrain {
         let center = Point3::new(corrected, 0.0, corrected);
         let eye = Point3::new(corrected, 1.5*corrected, -2.0*corrected); // General zoomed out view
         
-        let rot = 0.00; // Smooth rotation effect
+        let rot = 0.0078; // Smooth rotation effect
         let mut arc_ball = ArcBall::new(eye, center); // Arc Ball Camera
         window.set_light(Light::StickToCamera);
         
